@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healjai (พื้นที่ฮีลใจ) - พื้นที่ปลอดภัยเพื่อสุขภาพใจของคุณ</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Kanit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        kanit: ['Kanit', 'sans-serif'],
+                    },
+                    colors: {
+                        pastel: {
+                            pink: '#FFE5EC',
+                            rose: '#FBCFE8',
+                            amber: '#FEF3C7',
+                            mint: '#D1FAE5',
+                            sky: '#E0F2FE',
+                            lavender: '#EDE9FE',
+                            peach: '#FFEDD5'
+                        }
+                    },
+                    keyframes: {
+                        breathe: {
+                            '0%, 100%': { transform: 'scale(1)', opacity: '0.7' },
+                            '40%': { transform: 'scale(1.35)', opacity: '1' },
+                            '60%': { transform: 'scale(1.35)', opacity: '1' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-6px)' }
+                        }
+                    },
+                    animation: {
+                        breathe: 'breathe 19s infinite ease-in-out',
+                        float: 'float 4s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Kanit', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .card-flip-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .card-flip-inner.flipped {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            backface-visibility: hidden;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-amber-50/60 min-h-screen text-slate-700 flex flex-col justify-between selection:bg-rose-200">
+
+    <!-- Top Navigation Bar -->
+    <nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-rose-100/60">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <span class="text-2xl animate-float">🐱</span>
+                <span class="text-2xl font-bold bg-gradient-to-r from-rose-400 via-pink-400 to-amber-400 bg-clip-text text-transparent">Healjai</span>
+                <span class="text-xs bg-rose-100 text-rose-600 font-medium px-2 py-0.5 rounded-full hidden sm:inline">พื้นที่ฮีลใจ</span>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <button onclick="toggleAudioModal()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 p-2.5 rounded-full transition shadow-sm flex items-center gap-1.5 text-xs font-medium" title="เสียงผ่อนคลาย">
+                    <span id="audioStatusIcon">🎵</span>
+                    <span class="hidden md:inline">เสียงบรรยากาศ</span>
+                </button>
+                <button onclick="openSOSModal()" class="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-medium px-4 py-2 rounded-full shadow-md shadow-rose-200 transition transform active:scale-95 flex items-center gap-1.5 text-xs sm:text-sm">
+                    <span>🚨</span>
+                    <span>ปุ่ม SOS</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="max-w-3xl mx-auto px-4 py-6 sm:py-8 space-y-8 w-full flex-grow">
+
+        <!-- Welcome Banner -->
+        <section class="bg-gradient-to-r from-rose-100/70 via-pink-100/50 to-amber-100/70 p-6 rounded-3xl border border-rose-200/50 shadow-sm relative overflow-hidden">
+            <div class="relative z-10 max-w-xl">
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mb-1">ยินดีต้อนรับสู่พื้นที่ปลอดภัยของคุณ 🌿</h2>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    ไม่ว่าวันนี้คุณจะเจอเรื่องหนักหนาอะไรมา ขอให้รู้ว่าตรงนี้มีพื้นที่คอยโอบรับทุกอารมณ์ของคุณเสมอ... พักผ่อนให้สบายนะ
+                </p>
+            </div>
+            <div class="absolute -right-4 -bottom-6 text-7xl opacity-20 pointer-events-none">🌸</div>
+        </section>
+
+        <!-- Section 1: Daily Mood Check-in -->
+        <section class="bg-white p-6 rounded-3xl shadow-sm border border-orange-100/80 space-y-5">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                        <span>💭</span> วันนี้คุณรู้สึกยังไงบ้าง?
+                    </h3>
+                    <p class="text-slate-500 text-xs sm:text-sm mt-0.5">เลือกอารมณ์ของคุณตอนนี้ เพื่อรับข้อความกำลังใจและวิธีผ่อนคลาย</p>
+                </div>
+                <div class="text-right">
+                    <span id="streakBadge" class="bg-amber-100 text-amber-800 text-xs px-2.5 py-1 rounded-full font-medium flex items-center gap-1">
+                        🔥 เช็กอิน <span id="streakCount">1</span> วัน
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Emotion Buttons Grid -->
+            <div class="grid grid-cols-3 sm:grid-cols-6 gap-2.5">
+                <button onclick="selectMood('สดใส 😊', 'ความสุขของคุณส่องสว่างให้คนรอบข้างเสมอ! ขอให้วันนี้เป็นวันที่ใจฟูและสดใสตลอดวันนะ 🌟', 'bright')" 
+                        class="mood-btn p-3 bg-amber-50 hover:bg-amber-100/80 border border-amber-200/60 rounded-2xl transition flex flex-col items-center gap-1 group active:scale-95">
+                    <span class="text-3xl group-hover:scale-110 transition transform">😊</span>
+                    <span class="text-xs text-slate-700 font-medium">สดใส</span>
+                </button>
+                <button onclick="selectMood('สงบ 🙂', 'วันเรียบง่ายก็เป็นวันที่พิเศษได้นะ การที่คุณรู้สึกสงบและสบายใจคือสิ่งที่มีค่ามากที่สุด 🍃', 'calm')" 
+                        class="mood-btn p-3 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/60 rounded-2xl transition flex flex-col items-center gap-1 group active:scale-95">
+                    <span class="text-3xl group-hover:scale-110 transition transform">🙂</span>
+                    <span class="text-xs text-slate-700 font-medium">สงบ</span>
+                </button>
+                <button onclick="selectMood('เหนื่อย 😮‍💨', 'วันนี้เก่งมากแล้วนะที่ผ่านมันมาได้ พักผ่อนเยอะๆ ถอดความเครียดออกไปวางไว้ข้างๆ ก่อนนะ 🔋', 'tired')" 
+                        class="mood-btn p-3 bg-blue-50 hover:bg-blue-100/80 border border-blue-200/60 rounded-2xl transition flex flex-col items-center gap-1 group active:scale-95">
+                    <span class="text-3xl group-hover:scale-110 transition transform">😮‍💨</span>
+                    <span class="text-xs text-slate-700 font-medium">เหนื่อย</span>
+                </button>
+                <button onclick="selectMood('เศร้า 😢', 'ไม่เป็นไรเลยที่จะร้องไห้หรือเสียใจ ความรู้สึกของคุณสำคัญเสมอ เธอไม่ได้อยู่ตัวคนเดียวนะ กอดๆ 🫂', 'sad')" 
+                        class="mood-btn p-3 bg-indigo-50 hover:bg-indigo-100/80 border border-indigo-200/60 rounded-2xl transition flex flex-col items-center gap-1 group active:scale-95">
+                    <span class="text-3xl group-hover:scale-110 transition transform">😢</span>
+                    <span class="text-xs text-slate-700 font-medium">เศร้า</span>
+                </button>
+                <button onclick="selectMood('กังวล 😰', 'หายใจเข้าลึกๆ นะครับ สิ่งที่คุณกังวลอยู่อาจยังมาไม่ถึง ลองค่อยๆ ทำทีละอย่างนะ 🕊️', 'anxious')" 
+                        class="mood-btn p-3 bg-purple-50 hover:bg-purple-100/80 border border-purple-200/60 rounded-2xl transition flex flex-col items-center gap-1 group active:scale-95">
+                    <span class="text-3xl group-hover:scale-110 transition transform">😰</span>
+                    <span class="text-xs text-slate-700 font-medium">กังวล</span>
+                </button>
+                <button onclick="selectMood('หงุดหงิด 😠', 'รับรู้ว่าตัวเองกำลังโกรธก็เก่งมากแล้ว ถอยออกมาสูดอากาศสักนิด ดื่มน้ำเย็นๆ สักแก้วนะ 🧊', 'angry')" 
+                        class="mood-btn p-3 bg-rose-50 hover:bg-rose-100/80 border border-rose-200/60 rounded-2xl transition flex flex-col items-center gap-1 group active:scale-95">
+                    <span class="text-3xl group-hover:scale-110 transition transform">😠</span>
+                    <span class="text-xs text-slate-700 font-medium">โกรธ</span>
+                </button>
+            </div>
+
+            <!-- Dynamic Result & Action Cards Area -->
+            <div id="moodResult" class="hidden p-5 bg-rose-50/80 border border-rose-200 rounded-2xl text-slate-700 space-y-3 transition-all duration-300">
+                <div class="flex items-start gap-3">
+                    <div id="moodEmojiBadge" class="text-3xl p-2 bg-white rounded-xl shadow-sm">❤️</div>
+                    <div class="flex-1">
+                        <h4 id="moodTitle" class="font-semibold text-rose-700 text-base"></h4>
+                        <p id="moodMessage" class="text-sm text-slate-600 mt-1 leading-relaxed"></p>
+                    </div>
+                </div>
+
+                <!-- Custom Action Suggestion Based on Mood -->
+                <div id="moodSuggestions" class="pt-2 border-t border-rose-100/80 flex flex-wrap gap-2 text-xs">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- Mood History Timeline toggle -->
+            <div class="pt-1">
+                <button onclick="toggleMoodHistory()" class="text-xs text-slate-400 hover:text-slate-600 flex items-center gap-1 font-medium transition">
+                    <span>📜 ประวัติการบันทึกอารมณ์</span>
+                    <span id="historyArrow">▼</span>
+                </button>
+                <div id="moodHistoryContainer" class="hidden mt-3 p-3 bg-slate-50 rounded-2xl border border-slate-100 text-xs space-y-2 max-h-40 overflow-y-auto custom-scrollbar">
+                    <p class="text-slate-400 italic text-center py-2" id="emptyHistoryText">ยังไม่มีประวัติการบันทึกอารมณ์</p>
+                    <div id="historyList" class="space-y-1.5"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Daily Affirmation Card Flip -->
+        <section class="bg-gradient-to-r from-purple-100/80 via-pink-100/80 to-rose-100/80 p-6 rounded-3xl shadow-sm border border-purple-200/50 space-y-4">
+            <div class="text-center space-y-1">
+                <h3 class="text-xl font-bold text-slate-800 flex items-center justify-center gap-2">
+                    <span>✨</span> สุ่มการ์ดพลังบวกประจำวัน
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-600">กดที่การ์ดเพื่อรับคำอวยพรและข้อคิดดีๆ สำหรับวันนี้</p>
+            </div>
+
+            <div class="flex justify-center items-center py-2">
+                <div class="w-full max-w-sm h-48 perspective cursor-pointer group" onclick="flipAffirmationCard()">
+                    <div id="affirmationCardInner" class="card-flip-inner relative w-full h-full text-center shadow-md rounded-2xl">
+                        <!-- Front of Card -->
+                        <div class="card-front absolute w-full h-full bg-white rounded-2xl border-2 border-dashed border-purple-300 p-6 flex flex-col items-center justify-center space-y-3">
+                            <span class="text-4xl animate-bounce">🎁</span>
+                            <span class="text-sm font-semibold text-purple-600">คลิกเพื่อเปิดการ์ดฮีลใจ</span>
+                            <span class="text-xs text-slate-400">การ์ดข้อความสุ่มสร้างพลังบวก</span>
+                        </div>
+                        <!-- Back of Card -->
+                        <div class="card-back absolute w-full h-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white rounded-2xl p-6 flex flex-col items-center justify-center justify-between">
+                            <span class="text-xs tracking-wider uppercase opacity-80">Healjai Daily Affirmation</span>
+                            <p id="affirmationText" class="text-base sm:text-lg font-medium px-2 leading-relaxed text-center">
+                                "คุณมีคุณค่าในแบบของคุณเองเสมอ ไม่จำเป็นต้องเปรียบเทียบกับใคร"
+                            </p>
+                            <span class="text-xs opacity-75">แตะอีกครั้งเพื่อสุ่มใหม่ 💫</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Anonymous Chat Simulator -->
+        <section class="bg-white p-6 rounded-3xl shadow-sm border border-teal-100 space-y-4">
+            <div class="text-center space-y-1">
+                <h3 class="text-xl font-bold text-slate-800 flex items-center justify-center gap-2">
+                    <span>🤝</span> หาเพื่อนคุยฮีลใจ (Anonymous Chat)
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-600">สุ่มจำลองจับคู่คุยกับเพื่อนแบบไม่ระบุตัวตน ในพื้นที่ปลอดภัยและอบอุ่น</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-3 pt-2">
+                <button onclick="openChatModal('ระบาย')" class="flex-1 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 font-medium px-5 py-3 rounded-2xl shadow-sm transition flex items-center justify-center gap-2 text-sm group">
+                    <span class="text-xl group-hover:scale-110 transition">💬</span>
+                    <span>อยากหาคนรับฟัง (อยากระบาย)</span>
+                </button>
+                <button onclick="openChatModal('รับฟัง')" class="flex-1 bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 font-medium px-5 py-3 rounded-2xl shadow-sm transition flex items-center justify-center gap-2 text-sm group">
+                    <span class="text-xl group-hover:scale-110 transition">🎧</span>
+                    <span>อยากเป็นคนรับฟัง (ส่งกำลังใจ)</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Section 4: Community Healing Wall -->
+        <section class="bg-white p-6 rounded-3xl shadow-sm border border-orange-100 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                        <span>💌</span> ข้อความฮีลใจจากเพื่อนๆ
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-500">แบ่งปันหรืออ่านกำลังใจดีๆ จากผู้คนที่เดินผ่านไปมา</p>
+                </div>
+                
+                <!-- Category Filter -->
+                <div class="flex gap-1 bg-slate-100 p-1 rounded-xl text-xs font-medium text-slate-600 self-start sm:self-auto">
+                    <button onclick="filterNotes('all')" class="filter-btn active bg-white shadow-sm px-2.5 py-1 rounded-lg">ทั้งหมด</button>
+                    <button onclick="filterNotes('กำลังใจ')" class="filter-btn px-2.5 py-1 rounded-lg hover:text-slate-800">กำลังใจ</button>
+                    <button onclick="filterNotes('ข้อคิด')" class="filter-btn px-2.5 py-1 rounded-lg hover:text-slate-800">ข้อคิด</button>
+                    <button onclick="filterNotes('ขอบคุณ')" class="filter-btn px-2.5 py-1 rounded-lg hover:text-slate-800">ขอบคุณ</button>
+                </div>
+            </div>
+            
+            <!-- Input Form -->
+            <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-200/60 space-y-3">
+                <textarea id="noteInput" rows="2" placeholder="เขียนข้อความส่งพลังบวกให้คนอื่นตรงนี้..." 
+                          class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-300 text-sm resize-none bg-white"></textarea>
+                
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                        <!-- Color Selector -->
+                        <span class="text-xs text-slate-500">สีโน้ต:</span>
+                        <div class="flex gap-1.5">
+                            <button type="button" onclick="selectNoteColor('yellow')" class="w-5 h-5 rounded-full bg-yellow-100 border-2 border-yellow-300 focus:ring-2 ring-slate-400 shadow-sm" title="เหลือง"></button>
+                            <button type="button" onclick="selectNoteColor('pink')" class="w-5 h-5 rounded-full bg-rose-100 border border-rose-300 focus:ring-2 ring-slate-400 shadow-sm" title="ชมพู"></button>
+                            <button type="button" onclick="selectNoteColor('green')" class="w-5 h-5 rounded-full bg-emerald-100 border border-emerald-300 focus:ring-2 ring-slate-400 shadow-sm" title="เขียว"></button>
+                            <button type="button" onclick="selectNoteColor('blue')" class="w-5 h-5 rounded-full bg-sky-100 border border-sky-300 focus:ring-2 ring-slate-400 shadow-sm" title="ฟ้า"></button>
+                        </div>
+
+                        <!-- Tag Selector -->
+                        <select id="noteTagSelect" class="text-xs bg-white border border-slate-200 rounded-lg px-2 py-1 focus:outline-none">
+                            <option value="กำลังใจ">#กำลังใจ</option>
+                            <option value="ข้อคิด">#ข้อคิด</option>
+                            <option value="ขอบคุณ">#ขอบคุณ</option>
+                        </select>
+                    </div>
+
+                    <button onclick="addNote()" class="bg-slate-800 hover:bg-slate-700 text-white px-5 py-2 rounded-xl text-xs sm:text-sm font-medium transition shadow-sm active:scale-95 flex items-center gap-1">
+                        <span>ส่งข้อความ</span> ✉️
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notes List Grid -->
+            <div id="notesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                <!-- Dynamically Populated -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200/60 py-6 mt-10">
+        <div class="max-w-4xl mx-auto px-4 text-center space-y-2">
+            <p class="text-xs sm:text-sm text-slate-500 flex items-center justify-center gap-1">
+                สร้างขึ้นด้วยความใส่ใจเพื่อสนับสนุนสุขภาพใจของทุกคน 🤍 Healjai Community
+            </p>
+            <p class="text-xs text-slate-400">
+                หมายเหตุ: เว็บไซต์นี้เป็นพื้นที่ให้กำลังใจเบื้องต้น ในกรณีวิกฤตฉุกเฉิน กรุณาติดต่อสายด่วนสุขภาพจิต 1323
+            </p>
+        </div>
+    </footer>
+
+
+    <!-- ================= MODALS & OVERLAYS ================= -->
+
+    <!-- 1. SOS Emergency Modal -->
+    <div id="sosModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 space-y-6 shadow-2xl border border-rose-100 relative max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <button onclick="closeSOSModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 bg-slate-100 rounded-full w-8 h-8 flex items-center justify-center font-bold">✕</button>
+
+            <div class="text-center space-y-2">
+                <span class="text-5xl inline-block animate-bounce">🫂</span>
+                <h3 class="text-2xl font-bold text-rose-600">คุณไม่ได้อยู่ตัวคนเดียวนะ</h3>
+                <p id="sosRandomQuote" class="text-sm text-slate-600 bg-rose-50 p-3.5 rounded-2xl italic border border-rose-100">
+                    "สูดหายใจเข้าลึกๆ ช้าๆ... คุณเก่งมากแล้วนะที่ผ่านมันมาได้ถึงตรงนี้"
+                </p>
+            </div>
+
+            <!-- Guided Breathing Exercise (4-7-8 Technique) -->
+            <div class="bg-gradient-to-br from-indigo-50 to-purple-50 p-5 rounded-2xl border border-indigo-100 text-center space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-semibold text-indigo-700 uppercase tracking-wider">ฝึกหายใจคลายเครียด (4-7-8)</span>
+                    <button id="breathingToggleBtn" onclick="toggleBreathingExercise()" class="text-xs bg-indigo-600 text-white px-3 py-1 rounded-full font-medium hover:bg-indigo-700 transition">
+                        เริ่มฝึกหายใจ
+                    </button>
+                </div>
+
+                <div class="py-4 flex flex-col items-center justify-center min-h-[140px]">
+                    <div id="breathingCircle" class="w-24 h-24 rounded-full bg-indigo-300/50 border-4 border-indigo-500 flex items-center justify-center text-indigo-900 font-bold transition-all duration-1000 shadow-inner">
+                        <span id="breathingText" class="text-xs sm:text-sm text-center">พร้อมแล้ว<br>กดเริ่ม</span>
+                    </div>
+                </div>
+                <p id="breathingInstruction" class="text-xs text-slate-500">ช่วยลดความวิตกกังวลและผ่อนคลายระบบประสาทอย่างรวดเร็ว</p>
+            </div>
+
+            <!-- Emergency Helplines Thailand -->
+            <div class="space-y-2">
+                <h4 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">สายด่วนให้คำปรึกษาฟรี (ประเทศไทย)</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <a href="tel:1323" class="p-3 bg-slate-50 hover:bg-slate-100 rounded-2xl border border-slate-200 flex items-center gap-3 transition">
+                        <div class="w-9 h-9 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-lg">📞</div>
+                        <div>
+                            <div class="text-xs font-bold text-slate-800">สายด่วนสุขภาพจิต</div>
+                            <div class="text-xs text-rose-600 font-semibold">1323 (โทรฟรี 24 ชม.)</div>
+                        </div>
+                    </a>
+                    <a href="tel:027136793" class="p-3 bg-slate-50 hover:bg-slate-100 rounded-2xl border border-slate-200 flex items-center gap-3 transition">
+                        <div class="w-9 h-9 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-lg">💚</div>
+                        <div>
+                            <div class="text-xs font-bold text-slate-800">สมาคมสะมาริตานส์</div>
+                            <div class="text-xs text-purple-600 font-semibold">02-713-6793 (12.00-22.00 น.)</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Anonymous Chat Modal -->
+    <div id="chatModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full h-[550px] flex flex-col shadow-2xl border border-slate-100 relative overflow-hidden">
+            <!-- Chat Header -->
+            <div class="bg-gradient-to-r from-rose-400 to-pink-400 p-4 text-white flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-emerald-400 border border-white animate-pulse"></div>
+                    <div>
+                        <h4 class="font-bold text-sm" id="chatTitle">ห้องแชทฮีลใจ (ไม่ระบุตัวตน)</h4>
+                        <p class="text-[10px] text-rose-100" id="chatSubtitle">กำลังจับคู่กับเพื่อนสุ่ม...</p>
+                    </div>
+                </div>
+                <button onclick="closeChatModal()" class="text-white hover:bg-white/20 rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold">✕</button>
+            </div>
+
+            <!-- Chat Messages Container -->
+            <div id="chatMessages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-50 text-xs sm:text-sm custom-scrollbar">
+                <!-- System Status Message -->
+                <div id="chatMatchingStatus" class="text-center py-6 space-y-2">
+                    <div class="inline-block animate-spin text-2xl">⏳</div>
+                    <p class="text-slate-500 font-medium">กำลังค้นหาเพื่อนที่พร้อมคุยในบรรยากาศปลอดภัย...</p>
+                </div>
+            </div>
+
+            <!-- Chat Input Bar -->
+            <div class="p-3 bg-white border-t border-slate-100 flex gap-2 items-center">
+                <input type="text" id="chatInput" placeholder="พิมพ์ข้อความคุยกับเพื่อน..." disabled
+                       onkeypress="if(event.key==='Enter') sendChatMessage()"
+                       class="flex-1 px-3.5 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-rose-300 disabled:bg-slate-50">
+                <button id="chatSendBtn" onclick="sendChatMessage()" disabled
+                        class="bg-rose-400 hover:bg-rose-500 disabled:bg-slate-300 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition">
+                    ส่ง
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Audio Ambient Soundscapes Modal -->
+    <div id="audioModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 space-y-5 shadow-2xl border border-indigo-100 relative">
+            <button onclick="toggleAudioModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 bg-slate-100 rounded-full w-8 h-8 flex items-center justify-center font-bold">✕</button>
+
+            <div class="text-center space-y-1">
+                <span class="text-4xl">🎧</span>
+                <h3 class="text-lg font-bold text-slate-800">เสียงบรรยากาศผ่อนคลาย</h3>
+                <p class="text-xs text-slate-500">สังเคราะห์เสียงธรรมชาติผ่าน Web Audio API เพื่อการผ่อนคลาย</p>
+            </div>
+
+            <div class="space-y-2.5">
+                <!-- Rain Sound -->
+                <div class="flex items-center justify-between p-3 bg-indigo-50/60 rounded-2xl border border-indigo-100">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-2xl">🌧️</span>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-800">สายฝนฉ่ำเย็น</div>
+                            <div class="text-[10px] text-slate-400">Soft Rain Synthesizer</div>
+                        </div>
+                    </div>
+                    <button onclick="toggleSound('rain')" id="btnSoundRain" class="px-3 py-1.5 bg-indigo-600 text-white rounded-xl text-xs font-medium hover:bg-indigo-700 transition">
+                        เล่น
+                    </button>
+                </div>
+
+                <!-- Waves Sound -->
+                <div class="flex items-center justify-between p-3 bg-sky-50/60 rounded-2xl border border-sky-100">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-2xl">🌊</span>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-800">คลื่นทะเลซัดฝั่ง</div>
+                            <div class="text-[10px] text-slate-400">Ocean Waves Ambient</div>
+                        </div>
+                    </div>
+                    <button onclick="toggleSound('waves')" id="btnSoundWaves" class="px-3 py-1.5 bg-sky-600 text-white rounded-xl text-xs font-medium hover:bg-sky-700 transition">
+                        เล่น
+                    </button>
+                </div>
+
+                <!-- Forest Night Birds Sound -->
+                <div class="flex items-center justify-between p-3 bg-emerald-50/60 rounded-2xl border border-emerald-100">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-2xl">🍃</span>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-800">ลมพัดใบไม้พริ้ว</div>
+                            <div class="text-[10px] text-slate-400">Gentle Breeze Sound</div>
+                        </div>
+                    </div>
+                    <button onclick="toggleSound('wind')" id="btnSoundWind" class="px-3 py-1.5 bg-emerald-600 text-white rounded-xl text-xs font-medium hover:bg-emerald-700 transition">
+                        เล่น
+                    </button>
+                </div>
+            </div>
+
+            <div class="pt-2 text-center">
+                <button onclick="stopAllSounds()" class="text-xs text-rose-500 hover:text-rose-700 font-medium">
+                    ⏹️ ปิดเสียงทั้งหมด
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        /* ================= 1. STATE & INITIALIZATION ================= */
+        let currentNoteColor = 'yellow';
+        let currentFilter = 'all';
+        let chatRole = 'ระบาย';
+        let chatTimer = null;
+        let breathingTimer = null;
+        let isBreathing = false;
+
+        // Web Audio Synthesizer State
+        let audioCtx = null;
+        let activeSounds = {
+            rain: null,
+            waves: null,
+            wind: null
+        };
+
+        // Initial Sample Community Notes
+        const initialNotes = [
+            { id: 1, text: "ขอให้คนที่กำลังเหนื่อยวันนี้ ได้กินของอร่อยๆ แล้วนอนหลับฝันดีนะ!", author: "นิรนาม", date: "เมื่อครู่นี้", likes: 12, color: "yellow", tag: "กำลังใจ" },
+            { id: 2, text: "ไม่เป็นไรถ้าวันนี้ยังไม่สมบูรณ์แบบ แค่ผ่านมันมาได้ก็เก่งมากๆ แล้ว", author: "เพื่อนร่วมทาง", date: "10 นาทีที่แล้ว", likes: 8, color: "pink", tag: "ข้อคิด" },
+            { id: 3, text: "ขอบคุณตัวเองที่อดทนและตั้งใจพยายามมาโดยตลอดนะ ❤️", author: "แมวส้ม", date: "1 ชม. ที่แล้ว", likes: 15, color: "green", tag: "ขอบคุณ" },
+            { id: 4, text: "ท้องฟ้าหลังฝนตกมักสวยงามเสมอ ความทุกข์ตอนนี้ก็เช่นกัน", author: "ท้องฟ้า", date: "2 ชม. ที่แล้ว", likes: 6, color: "blue", tag: "กำลังใจ" }
+        ];
+
+        // Affirmation Pool
+        const affirmations = [
+            "คุณมีคุณค่าในแบบของคุณเองเสมอ ไม่จำเป็นต้องเปรียบเทียบกับใคร",
+            "วันนี้เก่งมากแล้ว พรุ่งนี้ค่อยเริ่มใหม่ได้เสมอ ไม่ต้องรีบร้อนนะ",
+            "การพักผ่อนไม่ใช่ความเกียจคร้าน แต่คือการชาร์จพลังที่จำเป็น",
+            "ทุกความรู้สึกของคุณมีสิทธิ์ที่จะเกิดขึ้น รับรู้และโอบกอดมันไว้",
+            "คุณเข้มแข็งกว่าที่คุณคิด และเคยผ่านเรื่องยากๆ มาได้ตั้งหลายครั้งแล้วนะ",
+            "อย่าลืมใจดีกับตัวเองให้มากพอๆ กับที่คุณใจดีกับคนอื่นนะ ❤️"
+        ];
+
+        window.onload = function() {
+            initLocalStorage();
+            renderNotes();
+            loadMoodHistory();
+            updateStreakCount();
+        };
+
+        /* ================= 2. LOCALSTORAGE MANAGEMENT ================= */
+        function initLocalStorage() {
+            if (!localStorage.getItem('healjai_notes')) {
+                localStorage.setItem('healjai_notes', JSON.stringify(initialNotes));
+            }
+            if (!localStorage.getItem('healjai_mood_history')) {
+                localStorage.setItem('healjai_mood_history', JSON.stringify([]));
+            }
+            if (!localStorage.getItem('healjai_last_checkin')) {
+                localStorage.setItem('healjai_last_checkin', '');
+            }
+            if (!localStorage.getItem('healjai_streak')) {
+                localStorage.setItem('healjai_streak', '1');
+            }
+        }
+
+        /* ================= 3. MOOD CHECK-IN LOGIC ================= */
+        function selectMood(moodText, messageText, moodType) {
+            const resultDiv = document.getElementById('moodResult');
+            const titleEl = document.getElementById('moodTitle');
+            const messageEl = document.getElementById('moodMessage');
+            const suggestionsEl = document.getElementById('moodSuggestions');
+            const emojiBadge = document.getElementById('moodEmojiBadge');
+
+            const moodEmojis = { bright: '😊', calm: '🙂', tired: '😮‍💨', sad: '😢', anxious: '😰', angry: '😠' };
+            emojiBadge.innerText = moodEmojis[moodType] || '❤️';
+
+            titleEl.innerText = `ความรู้สึกของคุณ: ${moodText}`;
+            messageEl.innerText = messageText;
+
+            // Generate Action Suggestions
+            let suggestionsHTML = '';
+            if (moodType === 'tired' || moodType === 'sad') {
+                suggestionsHTML = `
+                    <button onclick="toggleAudioModal()" class="px-2.5 py-1 bg-white hover:bg-rose-100 text-rose-600 rounded-lg border border-rose-200 transition">🎧 ฟังเสียงฝนผ่อนคลาย</button>
+                    <button onclick="openSOSModal()" class="px-2.5 py-1 bg-white hover:bg-rose-100 text-rose-600 rounded-lg border border-rose-200 transition">🫂 ฝึกหายใจ 4-7-8</button>
+                `;
+            } else if (moodType === 'anxious' || moodType === 'angry') {
+                suggestionsHTML = `
+                    <button onclick="openSOSModal()" class="px-2.5 py-1 bg-white hover:bg-rose-100 text-rose-600 rounded-lg border border-rose-200 transition">🚨 ฝึกหายใจด่วน</button>
+                    <button onclick="openChatModal('ระบาย')" class="px-2.5 py-1 bg-white hover:bg-rose-100 text-rose-600 rounded-lg border border-rose-200 transition">💬 ระบายในแชท</button>
+                `;
+            } else {
+                suggestionsHTML = `
+                    <button onclick="flipAffirmationCard()" class="px-2.5 py-1 bg-white hover:bg-rose-100 text-rose-600 rounded-lg border border-rose-200 transition">✨ เปิดการ์ดฮีลใจเพิ่ม</button>
+                `;
+            }
+            suggestionsEl.innerHTML = suggestionsHTML;
+
+            resultDiv.classList.remove('hidden');
+
+            // Save to History
+            saveMoodRecord(moodText);
+        }
+
+        function saveMoodRecord(moodText) {
+            const history = JSON.parse(localStorage.getItem('healjai_mood_history') || '[]');
+            const now = new Date();
+            const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            const dateStr = `${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
+
+            history.unshift({ mood: moodText, date: `${dateStr} (${timeStr})` });
+            if (history.length > 10) history.pop(); // Keep last 10 entries
+
+            localStorage.setItem('healjai_mood_history', JSON.stringify(history));
+            loadMoodHistory();
+            checkStreak();
+        }
+
+        function loadMoodHistory() {
+            const history = JSON.parse(localStorage.getItem('healjai_mood_history') || '[]');
+            const container = document.getElementById('historyList');
+            const emptyText = document.getElementById('emptyHistoryText');
+
+            if (history.length === 0) {
+                emptyText.classList.remove('hidden');
+                container.innerHTML = '';
+                return;
+            }
+
+            emptyText.classList.add('hidden');
+            container.innerHTML = history.map(item => `
+                <div class="flex justify-between items-center py-1 border-b border-slate-100 last:border-none">
+                    <span class="font-medium text-slate-700">${item.mood}</span>
+                    <span class="text-[10px] text-slate-400">${item.date}</span>
+                </div>
+            `).join('');
+        }
+
+        function toggleMoodHistory() {
+            const container = document.getElementById('moodHistoryContainer');
+            const arrow = document.getElementById('historyArrow');
+            container.classList.toggle('hidden');
+            arrow.innerText = container.classList.contains('hidden') ? '▼' : '▲';
+        }
+
+        function checkStreak() {
+            const today = new Date().toDateString();
+            const lastCheckin = localStorage.getItem('healjai_last_checkin');
+            let streak = parseInt(localStorage.getItem('healjai_streak') || '1');
+
+            if (lastCheckin !== today) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                
+                if (lastCheckin === yesterday.toDateString()) {
+                    streak += 1;
+                } else if (lastCheckin === '') {
+                    streak = 1;
+                }
+                localStorage.setItem('healjai_streak', streak.toString());
+                localStorage.setItem('healjai_last_checkin', today);
+            }
+            updateStreakCount();
+        }
+
+        function updateStreakCount() {
+            const streak = localStorage.getItem('healjai_streak') || '1';
+            document.getElementById('streakCount').innerText = streak;
+        }
+
+        /* ================= 4. AFFIRMATION CARD FLIP ================= */
+        function flipAffirmationCard() {
+            const cardInner = document.getElementById('affirmationCardInner');
+            const isFlipped = cardInner.classList.contains('flipped');
+
+            if (!isFlipped) {
+                const randomText = affirmations[Math.floor(Math.random() * affirmations.length)];
+                document.getElementById('affirmationText').innerText = `"${randomText}"`;
+                cardInner.classList.add('flipped');
+            } else {
+                cardInner.classList.remove('flipped');
+            }
+        }
+
+        /* ================= 5. COMMUNITY HEALING WALL LOGIC ================= */
+        function selectNoteColor(color) {
+            currentNoteColor = color;
+        }
+
+        function addNote() {
+            const input = document.getElementById('noteInput');
+            const tagSelect = document.getElementById('noteTagSelect');
+            const text = input.value.trim();
+
+            if (!text) return;
+
+            const notes = JSON.parse(localStorage.getItem('healjai_notes') || '[]');
+            const newNote = {
+                id: Date.now(),
+                text: text,
+                author: "เพื่อนส่งกำลังใจ",
+                date: "เมื่อครู่นี้",
+                likes: 0,
+                color: currentNoteColor,
+                tag: tagSelect.value
+            };
+
+            notes.unshift(newNote);
+            localStorage.setItem('healjai_notes', JSON.stringify(notes));
+            input.value = '';
+            renderNotes();
+        }
+
+        function likeNote(id) {
+            const notes = JSON.parse(localStorage.getItem('healjai_notes') || '[]');
+            const note = notes.find(n => n.id === id);
+            if (note) {
+                note.likes += 1;
+                localStorage.setItem('healjai_notes', JSON.stringify(notes));
+                renderNotes();
+            }
+        }
+
+        function filterNotes(tag) {
+            currentFilter = tag;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'shadow-sm');
+                if (btn.innerText.includes(tag) || (tag === 'all' && btn.innerText === 'ทั้งหมด')) {
+                    btn.classList.add('bg-white', 'shadow-sm');
+                }
+            });
+            renderNotes();
+        }
+
+        function renderNotes() {
+            const notes = JSON.parse(localStorage.getItem('healjai_notes') || '[]');
+            const container = document.getElementById('notesContainer');
+
+            const filteredNotes = currentFilter === 'all' 
+                ? notes 
+                : notes.filter(n => n.tag === currentFilter);
+
+            const colorClasses = {
+                yellow: 'bg-yellow-50/90 border-yellow-200/80',
+                pink: 'bg-rose-50/90 border-rose-200/80',
+                green: 'bg-emerald-50/90 border-emerald-200/80',
+                blue: 'bg-sky-50/90 border-sky-200/80'
+            };
+
+            if (filteredNotes.length === 0) {
+                container.innerHTML = `<p class="col-span-full text-center text-xs text-slate-400 py-6">ยังไม่มีข้อความในหมวดหมู่นี้</p>`;
+                return;
+            }
+
+            container.innerHTML = filteredNotes.map(note => `
+                <div class="p-4 rounded-2xl border ${colorClasses[note.color] || colorClasses.yellow} shadow-sm space-y-3 flex flex-col justify-between hover:shadow-md transition">
+                    <p class="text-slate-700 text-sm leading-relaxed">"${escapeHTML(note.text)}"</p>
+                    <div class="flex justify-between items-center text-xs text-slate-400 pt-1 border-t border-slate-100">
+                        <div class="flex items-center gap-1.5">
+                            <span class="font-medium text-slate-500">${note.author}</span>
+                            <span>•</span>
+                            <span class="text-[10px] bg-white/80 px-1.5 py-0.5 rounded text-slate-500 border border-slate-100">#${note.tag || 'กำลังใจ'}</span>
+                        </div>
+                        <button onclick="likeNote(${note.id})" class="text-rose-500 hover:text-rose-600 font-medium flex items-center gap-1 bg-white/70 px-2 py-0.5 rounded-full border border-rose-100 transition active:scale-90">
+                            ❤️ <span>${note.likes}</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        /* ================= 6. SOS MODAL & BREATHING EXERCISE ================= */
+        function openSOSModal() {
+            const sosQuotes = [
+                "สูดหายใจเข้าลึกๆ ช้าๆ... คุณเก่งมากแล้วนะที่ผ่านมันมาได้ถึงตรงนี้ 🫂",
+                "อย่าลืมนะว่า ท้องฟ้าหลังพายุย่อมสดใสเสมอ ความรู้สึกนี้จะอยู่แค่ชั่วคราวแล้วมันจะผ่านไป",
+                "ถ้าวันนี้เหนื่อยจนไม่ไหว ลองวางทุกอย่างลง แล้วหลับตาพักผ่อนสักครู่นะครับ ☕",
+                "คุณมีค่าเสมอ ไม่ว่าจะอยู่ในวันที่ดีหรือวันที่แย่ก็ตาม ❤️"
+            ];
+            document.getElementById('sosRandomQuote').innerText = `"${sosQuotes[Math.floor(Math.random() * sosQuotes.length)]}"`;
+            document.getElementById('sosModal').classList.remove('hidden');
+        }
+
+        function closeSOSModal() {
+            document.getElementById('sosModal').classList.add('hidden');
+            stopBreathingExercise();
+        }
+
+        function toggleBreathingExercise() {
+            if (isBreathing) {
+                stopBreathingExercise();
+            } else {
+                startBreathingExercise();
+            }
+        }
+
+        function startBreathingExercise() {
+            isBreathing = true;
+            document.getElementById('breathingToggleBtn').innerText = "หยุดฝึก";
+            const circle = document.getElementById('breathingCircle');
+            const text = document.getElementById('breathingText');
+            const instruction = document.getElementById('breathingInstruction');
+
+            let step = 0;
+            const runCycle = () => {
+                if (!isBreathing) return;
+
+                // 4-7-8 Breathing Cycle
+                if (step === 0) {
+                    // Inhale 4s
+                    circle.style.transform = "scale(1.4)";
+                    circle.style.backgroundColor = "rgba(165, 180, 252, 0.8)";
+                    text.innerText = "หายใจเข้า...\n(4 วินาที)";
+                    instruction.innerText = "สูดลมหายใจเข้าช้าๆ ทางจมูก";
+                    breathingTimer = setTimeout(() => { step = 1; runCycle(); }, 4000);
+                } else if (step === 1) {
+                    // Hold 7s
+                    circle.style.transform = "scale(1.4)";
+                    circle.style.backgroundColor = "rgba(129, 140, 248, 0.9)";
+                    text.innerText = "กลั้นหายใจ...\n(7 วินาที)";
+                    instruction.innerText = "ค้างลมหายใจไว้สบายๆ";
+                    breathingTimer = setTimeout(() => { step = 2; runCycle(); }, 7000);
+                } else if (step === 2) {
+                    // Exhale 8s
+                    circle.style.transform = "scale(1.0)";
+                    circle.style.backgroundColor = "rgba(199, 210, 254, 0.5)";
+                    text.innerText = "ผ่อนลมหายใจ...\n(8 วินาที)";
+                    instruction.innerText = "เป่าลมหายใจออกช้าๆ ทางปาก";
+                    breathingTimer = setTimeout(() => { step = 0; runCycle(); }, 8000);
+                }
+            };
+
+            runCycle();
+        }
+
+        function stopBreathingExercise() {
+            isBreathing = false;
+            clearTimeout(breathingTimer);
+            document.getElementById('breathingToggleBtn').innerText = "เริ่มฝึกหายใจ";
+            const circle = document.getElementById('breathingCircle');
+            circle.style.transform = "scale(1.0)";
+            circle.style.backgroundColor = "rgba(199, 210, 254, 0.5)";
+            document.getElementById('breathingText').innerHTML = "พร้อมแล้ว<br>กดเริ่ม";
+            document.getElementById('breathingInstruction').innerText = "ช่วยลดความวิตกกังวลและผ่อนคลายระบบประสาทอย่างรวดเร็ว";
+        }
+
+        /* ================= 7. ANONYMOUS CHAT SIMULATOR ================= */
+        function openChatModal(role) {
+            chatRole = role;
+            const titleEl = document.getElementById('chatTitle');
+            const subTitleEl = document.getElementById('chatSubtitle');
+            const messagesContainer = document.getElementById('chatMessages');
+            
+            titleEl.innerText = role === 'ระบาย' ? 'ห้องแชทหาคนรับฟัง' : 'ห้องแชทเป็นผู้ฟังฮีลใจ';
+            subTitleEl.innerText = 'กำลังจับคู่กับเพื่อนสุ่มแบบไม่ระบุตัวตน...';
+            
+            messagesContainer.innerHTML = `
+                <div id="chatMatchingStatus" class="text-center py-10 space-y-2">
+                    <div class="inline-block animate-spin text-3xl">⏳</div>
+                    <p class="text-slate-500 font-medium">กำลังสุ่มจับคู่เพื่อนคุยในบรรยากาศปลอดภัย...</p>
+                </div>
+            `;
+
+            document.getElementById('chatInput').disabled = true;
+            document.getElementById('chatSendBtn').disabled = true;
+            document.getElementById('chatModal').classList.remove('hidden');
+
+            // Simulate matching connection delay
+            clearTimeout(chatTimer);
+            chatTimer = setTimeout(() => {
+                const statusEl = document.getElementById('chatMatchingStatus');
+                if (statusEl) statusEl.remove();
+
+                subTitleEl.innerText = '🟢 เชื่อมต่อเรียบร้อยแล้ว (ไม่ระบุตัวตน)';
+                document.getElementById('chatInput').disabled = false;
+                document.getElementById('chatSendBtn').disabled = false;
+
+                // First Welcome Peer Message
+                const peerGreeting = role === 'ระบาย'
+                    ? "สวัสดีครับ/ค่ะ เราพร้อมรับฟังเรื่องราวของคุณนะ วันนี้ไปเจออะไรมา ระบายกับเราได้เลยนะ 😊"
+                    : "สวัสดีครับ/ค่ะ วันนี้เรารู้สึกหนักๆ อยากหาเพื่อนคุยรับฟังหน่อย ขอบคุณมากๆ นะที่คุณมารับฟัง 🤍";
+
+                appendChatMessage('peer', peerGreeting);
+            }, 2000);
+        }
+
+        function closeChatModal() {
+            document.getElementById('chatModal').classList.add('hidden');
+            clearTimeout(chatTimer);
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            appendChatMessage('user', text);
+            input.value = '';
+
+            // Simulated AI/Bot Peer Automatic Empathetic Response
+            setTimeout(() => {
+                const peerResponsesVent = [
+                    "รับรู้ถึงความรู้สึกนั้นเลยครับ/ค่ะ... เก่งมากๆ แล้วนะที่ผ่านมันมาได้",
+                    "ขอบคุณที่ไว้วางใจเล่าให้ฟังนะ เรื่องนี้คงหนักสำหรับคุณน่าดูเลย กอดๆ นะครับ",
+                    "เข้าใจเลยครับ ยินดีรับฟังเสมอนะ ค่อยๆ ระบายออกมาได้เลย ไม่ต้องรีบ",
+                    "ฟังแล้วรู้สึกได้เลยว่าคุณพยายามเต็มที่แล้ว พักผ่อนใจสักนิดนะ ❤️"
+                ];
+
+                const peerResponsesListen = [
+                    "ขอบคุณสำหรับคำส่งต่อพลังบวกนะครับ รู้สึกใจฟูขึ้นมากเลย ✨",
+                    "คำพูดของคุณช่วยให้วันแย่ๆ ของเราดีขึ้นเยอะเลย ขอบคุณที่เป็นผู้ฟังที่ดีนะ",
+                    "ดีใจมากเลยที่มีคนรับฟังอย่างเข้าอกเข้าใจแบบนี้ 🥺"
+                ];
+
+                const pool = chatRole === 'ระบาย' ? peerResponsesVent : peerResponsesListen;
+                const randomReply = pool[Math.floor(Math.random() * pool.length)];
+                appendChatMessage('peer', randomReply);
+            }, 1200);
+        }
+
+        function appendChatMessage(sender, text) {
+            const container = document.getElementById('chatMessages');
+            const msgDiv = document.createElement('div');
+            
+            if (sender === 'user') {
+                msgDiv.className = 'flex justify-end';
+                msgDiv.innerHTML = `
+                    <div class="bg-rose-400 text-white p-3 rounded-2xl rounded-tr-none max-w-[80%] shadow-sm leading-relaxed">
+                        ${escapeHTML(text)}
+                    </div>
+                `;
+            } else {
+                msgDiv.className = 'flex justify-start';
+                msgDiv.innerHTML = `
+                    <div class="bg-white border border-slate-200 text-slate-700 p-3 rounded-2xl rounded-tl-none max-w-[80%] shadow-sm leading-relaxed">
+                        ${escapeHTML(text)}
+                    </div>
+                `;
+            }
+
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        /* ================= 8. AMBIENT SOUNDSCAPES (WEB AUDIO API) ================= */
+        function toggleAudioModal() {
+            const modal = document.getElementById('audioModal');
+            modal.classList.toggle('hidden');
+        }
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function toggleSound(type) {
+            if (activeSounds[type]) {
+                stopSound(type);
+            } else {
+                startSound(type);
+            }
+        }
+
+        function startSound(type) {
+            const ctx = getAudioContext();
+            
+            // White/Pink Noise Node Generator
+            const bufferSize = ctx.sampleRate * 2;
+            const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            const output = buffer.getChannelData(0);
+
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+
+            const whiteNoise = ctx.createBufferSource();
+            whiteNoise.buffer = buffer;
+            whiteNoise.loop = true;
+
+            const filter = ctx.createBiquadFilter();
+            const gain = ctx.createGain();
+
+            if (type === 'rain') {
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(1000, ctx.currentTime);
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+            } else if (type === 'waves') {
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(400, ctx.currentTime);
+                filter.Q.setValueAtTime(1.0, ctx.currentTime);
+                
+                // LFO for wave swelling
+                const lfo = ctx.createOscillator();
+                lfo.frequency.setValueAtTime(0.2, ctx.currentTime);
+                const lfoGain = ctx.createGain();
+                lfoGain.gain.setValueAtTime(0.1, ctx.currentTime);
+                lfo.connect(gain.gain);
+                lfo.start();
+
+                gain.gain.setValueAtTime(0.12, ctx.currentTime);
+            } else if (type === 'wind') {
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(500, ctx.currentTime);
+                gain.gain.setValueAtTime(0.08, ctx.currentTime);
+            }
+
+            whiteNoise.connect(filter);
+            filter.connect(gain);
+            gain.connect(ctx.destination);
+
+            whiteNoise.start();
+
+            activeSounds[type] = { source: whiteNoise, gain: gain };
+
+            // UI Update
+            const btn = document.getElementById(`btnSound${type.charAt(0).toUpperCase() + type.slice(1)}`);
+            if (btn) {
+                btn.innerText = "ปิด";
+                btn.classList.replace('bg-indigo-600', 'bg-rose-500');
+                btn.classList.replace('bg-sky-600', 'bg-rose-500');
+                btn.classList.replace('bg-emerald-600', 'bg-rose-500');
+            }
+            updateAudioHeaderIcon();
+        }
+
+        function stopSound(type) {
+            if (activeSounds[type]) {
+                activeSounds[type].source.stop();
+                activeSounds[type] = null;
+
+                const btn = document.getElementById(`btnSound${type.charAt(0).toUpperCase() + type.slice(1)}`);
+                if (btn) {
+                    btn.innerText = "เล่น";
+                    if (type === 'rain') btn.className = "px-3 py-1.5 bg-indigo-600 text-white rounded-xl text-xs font-medium hover:bg-indigo-700 transition";
+                    if (type === 'waves') btn.className = "px-3 py-1.5 bg-sky-600 text-white rounded-xl text-xs font-medium hover:bg-sky-700 transition";
+                    if (type === 'wind') btn.className = "px-3 py-1.5 bg-emerald-600 text-white rounded-xl text-xs font-medium hover:bg-emerald-700 transition";
+                }
+            }
+            updateAudioHeaderIcon();
+        }
+
+        function stopAllSounds() {
+            Object.keys(activeSounds).forEach(type => stopSound(type));
+        }
+
+        function updateAudioHeaderIcon() {
+            const isAnyPlaying = Object.values(activeSounds).some(s => s !== null);
+            const icon = document.getElementById('audioStatusIcon');
+            if (icon) {
+                icon.innerText = isAnyPlaying ? '🔊' : '🎵';
+            }
+        }
+    </script>
+</body>
+</html>
